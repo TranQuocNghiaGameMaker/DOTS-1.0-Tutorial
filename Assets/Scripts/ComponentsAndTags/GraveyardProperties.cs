@@ -1,7 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
 
-public struct GraveyardProperty : IComponentData
+public struct GraveyardProperties : IComponentData
 {
     public float2 FieldDimensions;
     public int NumberToSpawn;
