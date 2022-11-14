@@ -30,8 +30,9 @@ public readonly partial struct GraveyardAspect : IAspect
         float3 randomPosition;
         do
         {
-            randomPosition = _graveyardRandom.ValueRW.Value.NextFloat3(MinCorner, MaxCorner);
-        } while (math.distance(_transfromAspect.Position, randomPosition) <= BRAIN_SAFETY_RADIUS_SQ);
+            randomPosition = _graveyardRandom.ValueRW.Value.NextFloat3(MinCorner, MaxCorne
+        } while (math.distancesq(_transfromAspect.Position, randomPosition) <= BRAIN_SAFETY_RADIUS_SQ);
+ 
         return randomPosition;
     }
     private float3 MinCorner => _transfromAspect.Position - HalfDimension;
