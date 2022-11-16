@@ -22,7 +22,8 @@ public class GraveyardBaker : Baker<GraveyardMono>
             FieldDimensions = authoring.FieldDimensions,
             NumberToSpawn = authoring.NumberToSpawn,
             TombstonePrefab = GetEntity(authoring.TombstonePrefab),
-            ZombiePrefab = GetEntity(authoring.ZombiePrefab)
+            ZombiePrefab = GetEntity(authoring.ZombiePrefab),
+            ZombieSpawnRate = authoring.ZombieSpawnRate
         });
         AddComponent(new GraveyardRandom
         {

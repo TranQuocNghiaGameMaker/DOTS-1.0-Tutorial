@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+//Aspect groups Data Component so it can be easily accessed and modified 
 public readonly partial struct GraveyardAspect : IAspect
 {
     public readonly Entity Entity;
@@ -18,6 +19,8 @@ public readonly partial struct GraveyardAspect : IAspect
     public int NumberTombstoneToSpawn => _graveyardProperties.ValueRO.NumberToSpawn;
     public Entity TombstonePrefab => _graveyardProperties.ValueRO.TombstonePrefab;
 
+    public Entity ZombiePrefab => _graveyardProperties.ValueRO.ZombiePrefab;
+
     public NativeArray<float3> ZombieSpawnPoint
     {
         get => _zombieSpawnPoints.ValueRO.Value;
@@ -30,6 +33,8 @@ public readonly partial struct GraveyardAspect : IAspect
         set => _zombieSpawnTimer.ValueRW.Value = value;
     }
     public bool TimeToSpawn => ZombieSpawnTimer <= 0;
+
+    public float ZombieSpawnRate => _graveyardProperties.ValueRO.ZombieSpawnRate;
     public UniformScaleTransform GetRandomTombstoneTransform()
     {
         return new()
@@ -39,7 +44,23 @@ public readonly partial struct GraveyardAspect : IAspect
             Scale = GetRandomScale(0.2f)
         };
     }
-
+    public UniformScaleTransform GetZombieSpawnPoint()
+    {
+        var position = GetRandomZombieSpawnPoint;
+        return new UniformScaleTransform
+        {
+            Position = position,
+            Rotation = quaternion.RotateY(HelperFunction.GetHeading(position, _transfromAspect.Position)),
+            Scale = 1f
+        };
+    }
+    /// <summary>
+    /// Get a random position in the ZombieSpawnPoint list
+    /// </summary>
+    private float3 GetRandomZombieSpawnPoint
+    {
+        get => ZombieSpawnPoint[_graveyardRandom.ValueRW.Value.NextInt(ZombieSpawnPoint.Length)];
+    }
     private float3 GetRandomPosition()
     {
         float3 randomPosition;
