@@ -44,5 +44,10 @@ public partial struct SpawnZombieJob : IJobEntity
         var newZombieTransform = graveyard.GetZombieSpawnPoint();
         var newZombie = ECB.Instantiate(graveyard.ZombiePrefab);
         ECB.SetComponent(newZombie, new LocalToWorldTransform { Value = newZombieTransform });
+        var zombieHeading = HelperFunction.GetHeading(newZombieTransform.Position, graveyard.Position);
+        ECB.SetComponent(newZombie, new ZombieHeading
+        {
+            Value = zombieHeading
+        });
     }
 }

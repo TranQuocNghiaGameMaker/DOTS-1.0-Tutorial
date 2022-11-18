@@ -29,5 +29,7 @@ public readonly partial struct ZombieWalkAspect : IAspect
     {
         _walkTimer += deltaTime;
         _transfromAspect.Position += _transfromAspect.Forward * _walkSpeed * deltaTime;
+        var swayAngle = _walkAmplitude * math.sin(_walkFrequency * _walkTimer);
+        _transfromAspect.Rotation = quaternion.Euler(0, _heading, swayAngle);
     }
 }
