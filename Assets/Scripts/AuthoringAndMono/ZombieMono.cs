@@ -11,7 +11,7 @@ public class ZombieMono : MonoBehaviour
     public float WalkFrequency;
 }
 
-public class Baker : Baker<ZombieMono>
+public class ZombieBaker : Baker<ZombieMono>
 {
     public override void Bake(ZombieMono authoring)
     {

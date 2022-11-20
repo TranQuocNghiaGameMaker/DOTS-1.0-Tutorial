@@ -20,9 +20,16 @@ public partial struct ZombieWalkSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         float deltaTime = SystemAPI.Time.DeltaTime;
+        var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+        //Get The Brain radius and offset
+        var brainEntity = SystemAPI.GetSingletonEntity<BrainTag>();
+        var brainScale = SystemAPI.GetComponent<LocalToWorldTransform>(brainEntity).Value.Scale;
+        var brainRadius = brainScale * 5f + 0.5f; 
         new ZombieWalkJob()
         {
-            deltatime = deltaTime
+            ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter(),
+            deltaTime = deltaTime,
+            brainRadius = brainRadius * brainRadius
         }.ScheduleParallel();
     }
 }
@@ -31,10 +38,16 @@ public partial struct ZombieWalkSystem : ISystem
 [BurstCompile]
 public partial struct ZombieWalkJob : IJobEntity
 {
-    public float deltatime;
+    public float deltaTime;
+    public float brainRadius;
+    public EntityCommandBuffer.ParallelWriter ECB;
     [BurstCompile]
-    private void Execute(ZombieWalkAspect zombie )
+    private void Execute(ZombieWalkAspect zombie, [EntityInQueryIndex] int sortkey )
     {
-        zombie.Walk(deltatime);
+        zombie.Walk(deltaTime);
+        if (zombie.IsInStopRange(float3.zero, brainRadius))
+        {
+            ECB.RemoveComponent<ZombieWalkingProperty>(sortkey, zombie.Entity);
+        }
     }
 }

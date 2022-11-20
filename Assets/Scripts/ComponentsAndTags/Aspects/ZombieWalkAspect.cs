@@ -32,4 +32,9 @@ public readonly partial struct ZombieWalkAspect : IAspect
         var swayAngle = _walkAmplitude * math.sin(_walkFrequency * _walkTimer);
         _transfromAspect.Rotation = quaternion.Euler(0, _heading, swayAngle);
     }
+
+    public bool IsInStopRange(float3 brainPos, float brainRadius)
+    {
+        return math.distancesq(brainPos, _transfromAspect.Position) <= brainRadius;
+    }
 }
