@@ -9,6 +9,9 @@ public class ZombieMono : MonoBehaviour
     public float WalkSpeed;
     public float WalkAmplitude;
     public float WalkFrequency;
+    public float EatDamagePerSecond;
+    public float EatAmplitude;
+    public float EatFrequency;
 }
 
 public class ZombieBaker : Baker<ZombieMono>
@@ -21,6 +24,12 @@ public class ZombieBaker : Baker<ZombieMono>
             WalkingSpeed = authoring.WalkSpeed,
             WalkAmplitude = authoring.WalkAmplitude,
             WalkFrequency = authoring.WalkFrequency
+        });
+        AddComponent(new ZombieEatProperty
+        {
+            EatDamagePerSecond = authoring.EatDamagePerSecond,
+            EatAmplitude = authoring.EatAmplitude,
+            EatFrequency = authoring.EatFrequency
         });
         AddComponent<ZombieTimer>();
         AddComponent<ZombieHeading>();

@@ -25,6 +25,7 @@ public partial struct ZombieInitializeSystem : ISystem
         {
             ecb.RemoveComponent<ZombieTag>(zombie.Entity);
             ecb.SetComponentEnabled<ZombieWalkingProperty>(zombie.Entity, false);
+            ecb.SetComponentEnabled<ZombieEatProperty>(zombie.Entity, false);
         }
         ecb.Playback(state.EntityManager);
     }
