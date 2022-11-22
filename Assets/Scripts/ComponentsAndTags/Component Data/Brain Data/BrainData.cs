@@ -7,3 +7,10 @@ public struct BrainTag : IComponentData
 {
 
 }
+
+public struct BrainHealth : IComponentData {
+    public float Value;
+    public float Max;
+}
+
+

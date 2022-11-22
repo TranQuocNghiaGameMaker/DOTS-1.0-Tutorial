@@ -25,11 +25,14 @@ public readonly partial struct ZombieEatAspect : IAspect
         set => _zombieTimer.ValueRW.Value = value;
     }
 
-    public void Eat(float deltaTime)
+    public void Eat(float deltaTime,EntityCommandBuffer.ParallelWriter ecb,int sortkey,Entity brainEntity)
     {
         _eatTimer += deltaTime;
         var eatAngle = _eatAmplitude * math.sin(_eatFrequency * _eatTimer);
         _transfromAspect.Rotation = quaternion.Euler(eatAngle,_heading,0);
+        var eatDamage = _eatDamagePerSecond * deltaTime;
+        var curBrainDamage = new BrainDamageBufferElement { Value = eatDamage };
+        ecb.AppendToBuffer(sortkey, brainEntity, curBrainDamage);
     }
     
 

@@ -20,9 +20,13 @@ public partial struct ZombieEatSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var deltaTime = SystemAPI.Time.DeltaTime;
+        var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+        var brain = SystemAPI.GetSingletonEntity<BrainTag>();
         new ZombieEatJob()
         {
-            deltaTime = deltaTime
+            deltaTime = deltaTime,
+            ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter(),
+            brain = brain
         }.ScheduleParallel();
     }
 }
@@ -32,9 +36,11 @@ public partial struct ZombieEatSystem : ISystem
 public partial struct ZombieEatJob : IJobEntity
 {
     public float deltaTime;
+    public EntityCommandBuffer.ParallelWriter ECB;
+    public Entity brain;
     [BurstCompile]
     private void Execute(ZombieEatAspect zombie, [EntityInQueryIndex] int sortkey )
     {
-        zombie.Eat(deltaTime);
+        zombie.Eat(deltaTime,ECB,sortkey,brain);
     }
 }
