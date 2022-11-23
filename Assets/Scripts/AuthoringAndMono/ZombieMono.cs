@@ -19,7 +19,7 @@ public class ZombieBaker : Baker<ZombieMono>
     public override void Bake(ZombieMono authoring)
     {
         AddComponent(new ZombieRiseRate { Value = authoring.ZombieRiseRate});
-        AddComponent(new ZombieWalkingProperty
+        AddComponent(new ZombieWalkProperty
         {
             WalkingSpeed = authoring.WalkSpeed,
             WalkAmplitude = authoring.WalkAmplitude,

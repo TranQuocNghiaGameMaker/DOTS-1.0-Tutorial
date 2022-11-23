@@ -20,9 +20,10 @@ public partial struct ReduceBrainHealthSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        state.Dependency.Complete();
         foreach (var brain in SystemAPI.Query<BrainAspect>())
         {
-            brain.ReduceBrainHealth();
+            brain.DamageBrain();
         }
     }
 }

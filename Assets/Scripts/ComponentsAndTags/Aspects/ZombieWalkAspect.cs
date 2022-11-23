@@ -11,7 +11,7 @@ public readonly partial struct ZombieWalkAspect : IAspect
     private readonly TransformAspect _transfromAspect;
 
     private readonly RefRW<ZombieTimer> _zombieTimer;
-    private readonly RefRO<ZombieWalkingProperty> _zombieWalkingProperty;
+    private readonly RefRO<ZombieWalkProperty> _zombieWalkingProperty;
     private readonly RefRO<ZombieHeading> _zombieHeading;
 
     private float _walkSpeed => _zombieWalkingProperty.ValueRO.WalkingSpeed;

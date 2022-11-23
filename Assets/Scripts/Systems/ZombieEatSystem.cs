@@ -22,8 +22,11 @@ public partial struct ZombieEatSystem : ISystem
         var deltaTime = SystemAPI.Time.DeltaTime;
         var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
         var brain = SystemAPI.GetSingletonEntity<BrainTag>();
+        var brainScale = SystemAPI.GetComponent<LocalToWorldTransform>(brain).Value.Scale;
+        var brainRadius = brainScale * 5f + 1;
         new ZombieEatJob()
         {
+            brainRadius = brainRadius * brainRadius,
             deltaTime = deltaTime,
             ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter(),
             brain = brain
@@ -38,9 +41,18 @@ public partial struct ZombieEatJob : IJobEntity
     public float deltaTime;
     public EntityCommandBuffer.ParallelWriter ECB;
     public Entity brain;
+    public float brainRadius;
     [BurstCompile]
     private void Execute(ZombieEatAspect zombie, [EntityInQueryIndex] int sortkey )
     {
-        zombie.Eat(deltaTime,ECB,sortkey,brain);
+        if (zombie.isInEatingRange(float3.zero,brainRadius))
+        {
+            zombie.Eat(deltaTime,ECB,sortkey,brain);
+        }
+        else
+        {
+            ECB.SetComponentEnabled<ZombieEatProperty>(sortkey, zombie.Entity, false);
+            ECB.SetComponentEnabled<ZombieWalkProperty>(sortkey, zombie.Entity, true);
+        }
     }
 }

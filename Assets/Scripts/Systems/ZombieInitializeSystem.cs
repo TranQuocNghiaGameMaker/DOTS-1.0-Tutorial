@@ -24,7 +24,7 @@ public partial struct ZombieInitializeSystem : ISystem
         foreach (var zombie in SystemAPI.Query<ZombieWalkAspect>().WithAll<ZombieTag>())
         {
             ecb.RemoveComponent<ZombieTag>(zombie.Entity);
-            ecb.SetComponentEnabled<ZombieWalkingProperty>(zombie.Entity, false);
+            ecb.SetComponentEnabled<ZombieWalkProperty>(zombie.Entity, false);
             ecb.SetComponentEnabled<ZombieEatProperty>(zombie.Entity, false);
         }
         ecb.Playback(state.EntityManager);

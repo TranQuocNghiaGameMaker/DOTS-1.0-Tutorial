@@ -47,7 +47,7 @@ public partial struct ZombieWalkJob : IJobEntity
         zombie.Walk(deltaTime);
         if (zombie.IsInStopRange(float3.zero, brainRadius))
         {
-            ECB.RemoveComponent<ZombieWalkingProperty>(sortkey, zombie.Entity);
+            ECB.SetComponentEnabled<ZombieWalkProperty>(sortkey, zombie.Entity,false);
             ECB.SetComponentEnabled<ZombieEatProperty>(sortkey, zombie.Entity,true);
         }
     }

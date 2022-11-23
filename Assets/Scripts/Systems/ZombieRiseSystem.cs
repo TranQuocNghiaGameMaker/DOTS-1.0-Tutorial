@@ -42,7 +42,7 @@ public partial struct ZombieRiseJob : IJobEntity
         {
             zombie.SetGroundLevel();
             ECB.RemoveComponent<ZombieRiseRate>(sortkey, zombie.Entity);
-            ECB.SetComponentEnabled<ZombieWalkingProperty>(sortkey, zombie.Entity,true);
+            ECB.SetComponentEnabled<ZombieWalkProperty>(sortkey, zombie.Entity,true);
             return;
         }
         zombie.Rise(time);

@@ -34,6 +34,11 @@ public readonly partial struct ZombieEatAspect : IAspect
         var curBrainDamage = new BrainDamageBufferElement { Value = eatDamage };
         ecb.AppendToBuffer(sortkey, brainEntity, curBrainDamage);
     }
+
+    public bool isInEatingRange(float3 brainPos, float brainRadius)
+    {
+        return math.distancesq(brainPos, _transfromAspect.Position) <= brainRadius - 1;
+    }
     
 
     

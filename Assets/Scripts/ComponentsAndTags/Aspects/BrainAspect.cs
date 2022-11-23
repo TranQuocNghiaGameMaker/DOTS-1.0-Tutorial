@@ -11,12 +11,15 @@ public readonly partial struct BrainAspect : IAspect
     private readonly RefRW<BrainHealth> _brainHealth;
     private readonly DynamicBuffer<BrainDamageBufferElement> _brainDamageBuffers;
 
-    public void ReduceBrainHealth()
+    public void DamageBrain()
     {
         foreach (var brainDamageBuffer in _brainDamageBuffers)
         {
             _brainHealth.ValueRW.Value -= brainDamageBuffer.Value;
         }
         _brainDamageBuffers.Clear();
+        var ltw = _transformAspect.LocalToWorld;
+        ltw.Scale = _brainHealth.ValueRO.Value / _brainHealth.ValueRO.Max;
+        _transformAspect.LocalToWorld = ltw;
     }
 }
